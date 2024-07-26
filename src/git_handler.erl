@@ -336,7 +336,7 @@ handle_cast({stop}, State) ->
     {stop,normal,ok,State};
 
 handle_cast(UnMatchedSignal, State) ->
-    ?LOG2_WARNING("Unmatched signal",[UnMatchedSignal]),
+    ?LOG_WARNING("Unmatched signal",[UnMatchedSignal]),
     io:format("unmatched_signal ~p~n",[{UnMatchedSignal,?MODULE,?LINE}]),
     {noreply, State}.
 
@@ -353,13 +353,12 @@ handle_cast(UnMatchedSignal, State) ->
 	  {stop, Reason :: normal | term(), NewState :: term()}.
 
 handle_info(timeout, State) ->
-    ?LOG2_NOTICE("Server started",[?MODULE]),
     ?LOG_NOTICE("Server started ",[?MODULE]),
     {noreply, State};
 
 
 handle_info(Info, State) ->
-    ?LOG2_WARNING("Unmatched signal",[Info]),
+    ?LOG_WARNING("Unmatched signal",[Info]),
     io:format("unmatched_signal ~p~n",[{Info,?MODULE,?LINE}]),
     {noreply, State}.
 
