@@ -128,7 +128,6 @@ fetch_merge(LocalRepo)->
 %% @end
 %%--------------------------------------------------------------------
 is_up_to_date(LocalRepo)->
-
     _Fetch=os:cmd("git -C "++LocalRepo++" "++"fetch origin "),
     Status=os:cmd("git -C "++LocalRepo++" status -uno | grep -q 'Your branch is up to date'  && echo Up to date || echo Not up to date"),
     [FilteredGitStatus]=[S||S<-string:split(Status, "\n", all),
@@ -137,6 +136,9 @@ is_up_to_date(LocalRepo)->
 	       ?UpToDate->
 		   true;
 	       ?NotUpToDate->
+		   false;
+	       _ ->
+		   ?LOG_WARNING("Unmatched ",[FilteredGitStatus]),
 		   false
 	   end,
     Result.
