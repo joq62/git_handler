@@ -56,8 +56,13 @@ all_filenames(RepoDir)->
 %%--------------------------------------------------------------------
 read_file(RepoDir,FileName)->
     FullFileName=filename:join([RepoDir,FileName]),
-    {ok,Info}=file:consult(FullFileName),
-    {ok,Info}.
+    case file:consult(FullFileName) of
+	{error,Reason}->
+	    {error,["Failed to read File with reason Reason",FullFileName,Reason]};
+	
+	{ok,Info}->
+	    {ok,Info}
+    end.
 
 %%--------------------------------------------------------------------
 %% @doc
@@ -137,7 +142,7 @@ is_up_to_date(LocalRepo)->
 		   true;
 	       ?NotUpToDate->
 		   false;
-	       _ ->
+	       _ -> %[\"fatal: not a git repository (or any of the parent directories): .git\",\"Not up to date\"]
 		   ?LOG_WARNING("Unmatched ",[FilteredGitStatus]),
 		   false
 	   end,
