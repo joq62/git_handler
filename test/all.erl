@@ -38,6 +38,8 @@ start()->
     io:format("Start ~p~n",[{?MODULE,?FUNCTION_NAME,?LINE}]),
     
     ok=setup(),
+    ok=test_git_handler:start(),
+
  %   ok=load_start_release(),
   %  ok=host_server_test(),
    % ok=deployment_server_test(),
